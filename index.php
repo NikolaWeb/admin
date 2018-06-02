@@ -222,25 +222,6 @@
                   }
               });
 
-
-
-				
-				
-				
-				//select all information
-				/*
-				function fetch_data(){
-					$.ajax({
-						url: "select.php",
-						method: "POST",
-						success:function(data){
-							$("#table_body").html(data);
-						}
-					});
-				}
-				fetch_data();  
-				*/
-				
 			 
 				var dataTable=$('#app_table').DataTable({
 					"processing": true,
@@ -323,24 +304,42 @@
 					});
 				}	
 			});
+
+          //delete an item
+          $(document).on('click','.cloneItem',function(e){
+              e.preventDefault();
+              if (confirm("Selected item will be cloned. Are you sure?")){
+                  var per_id=$(this).data('id');
+
+                  $.ajax({
+                      url:'clone.php?id='+per_id,
+                      type:'POST',
+                      dataType:'html',
+                      success: function(data){
+                          if ($.fn.DataTable.isDataTable("#app_table")) {
+                              $('#app_table').DataTable().clear().destroy();
+                          }
+                          //redraw table after deletion
+                          var dataTable=$('#app_table').DataTable({
+                              "processing": true,
+                              "serverSide":true,
+                              "ajax":{
+                                  url:"select.php",
+                                  type:"post"
+                              }
+                          });
+
+                          //display message
+                          $("#app_status").text("Item Cloned!").css('display','block').fadeOut(2000).removeClass().addClass('item-added');
+                      },
+                      error: function(textStatus){
+                          console.log(textStatus);
+                      }
+                  });
+              }
+          });
 			
-			//delete an item 
-			/*
-				$(document).on('click', '.del-item', function(e){  
-					var url = "delete.php?page=info&order=" + $(this).data("id");
-					if(confirm("Are you sure you want to delete this page?")){
-						$.ajax({
-							type: "POST",
-							url: url,
-							success: function(data)
-							{
-								fetch_data();
-							}
-						});
-					}	
-					e.preventDefault();
-				});
-				*/
+
 		</script>
 	</body>
 </html>

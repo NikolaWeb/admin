@@ -277,6 +277,10 @@ p, h1, h2, h3, h4, h5, h6 {
 	content: "";
 	background-image: url(images/delete.png);
 }
+.icon-copy::before{
+	content: "";
+	background-image: url(images/copy.png);
+}
 .item-deleted{
 	color: #a94442;
 	background-color: #f2dede;

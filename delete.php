@@ -32,16 +32,30 @@ if(isset($_GET['delete'])){
         }
     }
 
-    delete_files($urlPath);
+    if($urlPath != '../'){
+        delete_files($urlPath);
 
-    $sqldelete="DELETE FROM info WHERE id_info='$id'";
-    $result_delete = mysqli_query($conn,$sqldelete);
-    if($result_delete){
-        echo'<script>window.location.href="index.php"</script>';
+        $sqldelete="DELETE FROM info WHERE id_info='$id'";
+        $result_delete = mysqli_query($conn,$sqldelete);
+        if($result_delete){
+            echo'<script>window.location.href="index.php"</script>';
+        }
+        else{
+            echo'<script>alert("Delete Failed")</script>';
+        }
     }
     else{
-        echo'<script>alert("Delete Failed")</script>';
+        $sqldelete="DELETE FROM info WHERE id_info='$id'";
+        $result_delete = mysqli_query($conn,$sqldelete);
+        if($result_delete){
+            echo'<script>window.location.href="index.php"</script>';
+        }
+        else{
+            echo'<script>alert("Delete Failed")</script>';
+        }
     }
+
+
 }
 
 include 'close.php';

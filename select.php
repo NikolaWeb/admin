@@ -44,6 +44,7 @@ while($row=mysqli_fetch_array($query)){
 	
 	
     $subdata[]="<button class='getEdit' data-id='".$row[0]."'><i class='icon icon-edit'></i></button>
+                <button class='cloneItem' data-id='".$row[0]."'><i class='icon icon-copy'></i></button>
 				<button class='deleteItem' data-id='".$row[0]."'><i class='icon icon-delete'></i></button>";
 
     $data[]=$subdata;
