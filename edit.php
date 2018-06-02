@@ -54,7 +54,13 @@ if(isset($_REQUEST['id'])){
 		array_unshift($thumbnails,"");
 		unset($thumbnails[0]);
     }
-	
+    if(substr($urlPath, -1) == '/') {
+        $urlPath = substr($urlPath, 0, -1);
+    }
+
+    if (!file_exists("../" . $urlPath)) {
+        mkdir("../" . $urlPath, 0755, true);
+    }
 	$myfile = fopen("../" . $urlPath."/index.php", "w") or die("Unable to open file!");
 	
 	
@@ -145,7 +151,7 @@ if(isset($_REQUEST['id'])){
 			</form>
             <div class="app_content">
                 <?php
-                include "connection.php";
+
                 $query = "SELECT * from info";
                 $res = mysqli_query($conn, $query);
 
