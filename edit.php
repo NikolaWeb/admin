@@ -62,9 +62,9 @@ if(isset($_REQUEST['id'])){
         mkdir("../" . $urlPath, 0755, true);
     }
 	$myfile = fopen("../" . $urlPath."/index.php", "w") or die("Unable to open file!");
-	
-	
-	
+
+
+
 ?>
    			<form class="section section--queryResults" action="" method="POST" id="queryEditor" enctype="multipart/form-data">
 			<input type="hidden" data-id="<?php echo $id; ?>" id="idInfo" />
@@ -83,7 +83,7 @@ if(isset($_REQUEST['id'])){
 					</label>
 				</section>
 			<?php for($i=1;$i<$numOfQueries;$i++) : ?>
-			
+
 				<section class="section section--queryResult">
 					<h4 class="section__heading">Query Result <?php echo $i; ?></h4>
 					<div class="input__group input__group--two">
@@ -210,15 +210,15 @@ if(isset($_REQUEST['urlPath'])){
 	$urlPath = $_REQUEST['urlPath'];
 }
 /*
-$infoQuery = "UPDATE info 
+$infoQuery = "UPDATE info
 				SET name = '$infoName', short_desc ='$shortDesc'
 				WHERE id_info = $id";
-		*/	
+		*/
 	$infoQuery = "UPDATE info 
 				SET name = '$infoName', short_desc ='$shortDesc', tags = '$tags', tracking_header = '$headerPixel', tracking_footer = '$footerPixel', url_path= '$urlPath'
 				WHERE id_info = $id";
 				//echo $infoQuery;
-				
+
 	mysqli_query($conn, $infoQuery);
 
 for($i=1;$i<$numOfQueries;$i++){
@@ -252,12 +252,12 @@ for($i=1;$i<$numOfQueries;$i++){
 	if(isset($_POST['imageUpload'. $i])){
 		$thumbnails[$i] = $_POST['imageUpload'. $i];
 	}
-}	
+}
 
 $result = "";
 for($i=1;$i<$numOfQueries;$i++){
 	$ad = '';
-	
+
 	if($isAds[$i] != 0) $ad ='<div class="ad">Ad</div>';
 	$rating = '';
 	if($enableRatings[$i] != 0) $rating = '<div class="rating"><span style="margin-top: -1px;">'.$stars[$i].'.0 </span><img src="/assets/images/rate-'.$stars[$i].'.png" style="margin-right: 4px;"><span style="color: #777; margin-top: -1px;">'.$numberVotes[$i].' votes - rating for '.$displayLinks[$i].'</span></div>';
@@ -266,15 +266,15 @@ for($i=1;$i<$numOfQueries;$i++){
 	if (!is_dir($fullPath)) {
 		mkdir($fullPath, 0755, true);
 	}
-	
+
 	$target_dir ="../" . $urlPath ."/images/";
 	$imageFileType = 0;
 	if(isset($_FILES["imageUpload" . $i])){
 		$target_file = $target_dir . basename($_FILES["imageUpload" . $i]["name"]);
 		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-	}	
+	}
 	$uploadOk = 1;
-	
+
 	//echo '<br>' . $target_file . '<br>';
 	// Check if image file is a actual image or fake image
 	if($imageFileType) {
@@ -282,21 +282,21 @@ for($i=1;$i<$numOfQueries;$i++){
 		if ($uploadOk == 0) {
 		//    echo "Sorry, your file was not uploaded.";
 		// if everything is ok, try to upload file
-		} 
+		}
 		else {
 			if (move_uploaded_file($_FILES["imageUpload" . $i]["tmp_name"], $target_file)) {
 		 //       echo "The file ". basename( $_FILES["imageUpload" . $i]["name"]). " has been uploaded.";
-				
+
 				$query[$i] = "UPDATE results 
 							SET meta_title = '$titles[$i]', url_mask = '$displayLinks[$i]', masked_url = '$actualLinks[$i]', description = '$descriptions[$i]', ad = '$isAds[$i]', ratings = '$enableRatings[$i]', stars = $stars[$i], votes = $numberVotes[$i], thumbnail = '$target_file'
 							WHERE info_id = $idInfo";
 			/*
-			$query[$i] = "UPDATE results 
+			$query[$i] = "UPDATE results
 				SET meta_title = '$titles[$i]'
 				WHERE id_result = $idResults[$i]";
-			*/	
-				mysqli_query($conn, $query[$i]);		
-		 
+			*/
+				mysqli_query($conn, $query[$i]);
+
 				$result .='<div style="margin-bottom: 22px;float:left;content:” “;display: table;clear: both;">
 							<h3 class="result-heading"><a href="'.$actualLinks[$i].'">'.$titles[$i].'</a></h3>
 							<a href="'.$actualLinks[$i].'" style="height:65px;width:116px">
@@ -310,28 +310,28 @@ for($i=1;$i<$numOfQueries;$i++){
 							<div class="result-des">'.$descriptions[$i].'</div>
 							</div>
 						</div>';
-						continue;	
+						continue;
 
-			} 
+			}
 			else {
 			   echo "Sorry, there was an error uploading your file.";
 			}
 		}
 	}
-	
-	
+
+
 	$query[$i] = "UPDATE results 
 				SET meta_title = '$titles[$i]', url_mask = '$displayLinks[$i]', masked_url = '$actualLinks[$i]', description = '$descriptions[$i]', ad = '$isAds[$i]', ratings = '$enableRatings[$i]', stars = $stars[$i], votes = $numberVotes[$i], thumbnail = ''
 				WHERE id_result = $idResults[$i]";
 	/*
-	$query[$i] = "UPDATE results 
+	$query[$i] = "UPDATE results
 				SET meta_title = '$titles[$i]'
 				WHERE id_result = $idResults[$i]";
 	echo $query[$i];
 	*/
 	mysqli_query($conn, $query[$i]);
-	
-			
+
+
 
 	$result .='<div style="margin-bottom: 22px;float:left;content:” “;display: table;clear: both;">
 				<h3 class="result-heading"><a href="'.$actualLinks[$i].'">'.$titles[$i].'</a></h3>
@@ -339,8 +339,8 @@ for($i=1;$i<$numOfQueries;$i++){
 				'. $rating .'
 				<div class="result-des">'.$descriptions[$i].'</div>
 			</div>';
-				
-			
+
+
 }
 
 
@@ -392,7 +392,7 @@ $(document).ready(function() {
 			success: function(data)
 			{
 				console.log(data);
-				location.href = "index.php"
+				location.href = "index.php";
 				/*
 				if ($.fn.DataTable.isDataTable("#app_table")) {
 					$('#app_table').DataTable().clear().destroy();

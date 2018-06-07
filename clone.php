@@ -11,6 +11,8 @@ if(isset($_GET['id'])) {
 		WHERE id_info=$id";
     $run_sql=mysqli_query($conn,$sql);
     $numOfQueries = intval(mysqli_num_rows($run_sql))+1;
+
+    $i = 0;
     while($row=mysqli_fetch_array($run_sql)) {
 
         //singular data from info table
@@ -21,8 +23,8 @@ if(isset($_GET['id'])) {
         $headerPixel = $row['tracking_header'];
         $footerPixel = $row['tracking_footer'];
         $urlPath = $row['url_path'] . time();
-        $row = mysqli_fetch_array($run_sql);
 
+        /*
         //arrays from results table
         $idResults[] = $row['id_result'];
         array_unshift($idResults,"");
@@ -54,6 +56,23 @@ if(isset($_GET['id'])) {
         $thumbnails[] = $row['thumbnail'];
         array_unshift($thumbnails,"");
         unset($thumbnails[0]);
+        */
+
+        if($row['meta_title']){
+            $titles[$i] = $row['meta_title'];
+        }
+        else{
+            $titles[$i] = "";
+        }
+        if($row['url_mask']){
+            $displayLinks[$i] = $row['url_mask'];
+        }
+        else{
+            $displayLinks[$i] = "";
+        }
+
+
+        $i++;
     }
 
     $infoQuery = "INSERT INTO info (id_info, name, short_desc, tags, tracking_header, tracking_footer, url_path)
@@ -65,4 +84,24 @@ if(isset($_GET['id'])) {
         echo mysqli_error($conn);
     }
 
+
+    $result = "";
+    for($i=1;$i<$numOfQueries;$i++){
+
+/*
+        $query[$i] = "INSERT INTO results (id_result, meta_title, url_mask, masked_url, description, ad, ratings, stars, votes, thumbnail, info_id)
+			VALUES(NULL, '$titles[$i]', 
+			'$displayLinks[$i]', 
+			'$actualLinks[$i]', 
+			'$descriptions[$i]', '$isAds[$i]', '$enableRatings[$i]', '$stars[$i]', '$numberVotes[$i]', '', $idInfo)";
+     */
+        $query[$i] = "INSERT INTO results (id_result, meta_title, url_mask, masked_url, description, ad, ratings, stars, votes, thumbnail, info_id)
+			VALUES(NULL, '$titles[$i]', 
+			'$displayLinks[$i]', 
+			'', '', '', '', NULL, NULL, '', $idInfo";
+        var_dump($query[$i]);
+        mysqli_query($conn, $query[$i]);
+
+
+    }
 }
